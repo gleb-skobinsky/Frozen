@@ -5,18 +5,10 @@ import android.opengl.GLSurfaceView
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Canvas
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
-import androidx.compose.ui.graphics.drawscope.draw
-import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
-import androidx.compose.ui.node.DelegatingNode
-import androidx.compose.ui.node.DrawModifierNode
-import androidx.compose.ui.node.LayoutAwareModifierNode
-import androidx.compose.ui.node.ModifierNodeElement
-import androidx.compose.ui.node.ObserverModifierNode
-import androidx.compose.ui.node.currentValueOf
-import androidx.compose.ui.node.observeReads
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.node.*
 import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -45,6 +37,7 @@ internal class AndroidFrozenNode : FrozenNode(),
         if (!openGlAttached) {
             localView?.let {
                 openGlAttached = true
+                /*
                 val bitmap = ImageBitmap(size.width.toInt(), size.height.toInt())
                 draw(
                     density = drawContext.density,
@@ -54,11 +47,14 @@ internal class AndroidFrozenNode : FrozenNode(),
                 ) {
                     contentScope.drawContent()
                 }
+                 */
                 contentScope.drawContent()
 
                 val glView = GLSurfaceView(context).apply {
                     layoutParams = ViewGroup.LayoutParams(1000, 1000)
+                    setEGLContextClientVersion(2)
                     setRenderer(NewRenderer())
+                    setBackgroundColor(Color.Red.toArgb())
                 }
                 it.addView(glView)
             }
